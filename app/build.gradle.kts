@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.carlos.caculadora_imc"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.carlos.caculadora_imc"
