@@ -57,5 +57,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        buttonCalculate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String weight = editTextWeight.getText().toString();
+                double height = seekBarHeight.getProgress();
+
+                value value = double()
+            }
+        });
+
     }
 }
