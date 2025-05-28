@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,15 +34,19 @@ public class MainActivity extends AppCompatActivity {
         Button buttonClear = findViewById(R.id.button_clear);
         Button buttonCalculate = findViewById(R.id.button_calculate);
         TextView textViewProgress = findViewById(R.id.textview_progress);
+        TextView textViewResult = findViewById(R.id.textview_result);
+
+
 
         buttonClear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editTextWeight.setText("");
                 seekBarHeight.setProgress(0);
-                textViewProgress.setText("");
+                textViewResult.setText("");
 
-
+                textViewResult.setVisibility(View.GONE);
+                textViewProgress.setVisibility(View.GONE);
             }
         });
 
@@ -49,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 textViewProgress.setText(String.format(Locale.getDefault(), "%d cm", progress));
+                textViewProgress.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -65,13 +71,22 @@ public class MainActivity extends AppCompatActivity {
         buttonCalculate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String weightText = editTextWeight.getText().toString();
-                double height = (double)seekBarHeight.getProgress() / 100;
+                try {
+                    String weightText = editTextWeight.getText().toString();
+                    double height = (double) seekBarHeight.getProgress() / 100;
+                    if (height == 0){
+                        Toast.makeText(getApplicationContext(), "Informe uma altura válida", Toast.LENGTH_SHORT).show();
+                    } else {
+                        double weight = Double.parseDouble(weightText);
+                        double result = (double) weight / (height * height);
 
-                double weight = Double.parseDouble(weightText);
-                double result = (double)weight / (height * height);
-
-                textViewProgress.setText(String.format(Locale.getDefault(), "IMC: %.2f", result));
+                        textViewResult.setText(String.format(Locale.getDefault(), "IMC: %.2f", result));
+                        textViewResult.setVisibility(View.VISIBLE);
+                    }
+                } catch (Exception e){
+                    // Exibe uma mensagem temporária na tela solicitando que o usuário informe um peso válido
+                    Toast.makeText(getApplicationContext(), "Informe um peso válido", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
